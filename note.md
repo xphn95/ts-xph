@@ -119,3 +119,33 @@ const c: C = ['dd', 453]
 
 ## 描述函数对象
 
+不罗嗦了, 参数的检查是稀松的不能多可以少
+
+以下是带 this 的情况(无法使用箭头函数)
+```typescript
+type Person = {
+  name: string,
+  age: number,
+  sayHi: FnWithThis
+}
+
+type FnWithThis = (this: Person, name: string) => void
+
+const sayHi: FnWithThis = function () {
+  console.log('hi', this.name)
+}
+
+const p: Person = {
+  name: 'john',
+  age: 20,
+  sayHi
+}
+
+p.sayHi('mike')
+sayHi.call(p, 'mike')
+```
+
+由于 Function 太不精确, 所以一般用 () => ? 来描述函数
+
+## 描述其他对象
+
