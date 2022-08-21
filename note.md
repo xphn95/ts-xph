@@ -149,3 +149,25 @@ sayHi.call(p, 'mike')
 
 ## 描述其他对象
 
+```typescript
+const d: Date = new Date()
+
+const r: RegExp = /ab+c/
+
+const m: Map<string, number> = new Map()
+
+m.set('123', 2312)
+
+const wm: WeakMap<{ name: string }, number> = new WeakMap()
+
+// object 是 js 中的引用类型, 注意和 Object 区分
+type A = object
+const a: A = {}
+
+const s: Set<number | string> = new Set()
+s.add('hi')
+s.add(123)
+
+const ws: WeakSet<{ name: string }> = new WeakSet()
+ws.add({ name: 'mike' })
+```
