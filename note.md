@@ -172,4 +172,6 @@ const ws: WeakSet<{ name: string }> = new WeakSet()
 ws.add({ name: 'mike' })
 ```
 
-## any 和 unknown 的区
+## any 和 unknown 的区别
+
+### any
