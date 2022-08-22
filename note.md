@@ -239,3 +239,30 @@ if ((user.permission & Permission.Manage) === Permission.Manage) {
 
 ## 何时使用 enum 会显得很呆?
 
+```typescript
+// bad
+enum Fruit {
+  apple = 'apple',
+  banana = 'banana',
+  pineapple = 'pineapple',
+  watermelon = 'watermelon'
+}
+
+let f: Fruit = Fruit.apple
+
+f = Fruit.watermelon
+
+// good
+type Fruit_ = 'apple' | 'banana' | 'pineapple' | 'watermelon'
+
+let f_: Fruit_ = 'apple'
+f_ = 'watermelon'
+
+console.log(f === f_)
+```
+
+### 结论
+
+- number enum (√)
+- string enum (√可以, ×但可以自定义类型代替)
+- other enum (×)
