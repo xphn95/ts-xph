@@ -175,8 +175,67 @@ ws.add({ name: 'mike' })
 ## any 和 unknown 的区别
 
 ### any
-
+所有类型的并集
 
 ### unknown
+一开始不知道什么类型, 多用在外部获取的数据, 可以再断言真正的类型
 
-...
+## never 类型怎么用
+表示空集
+
+## 何时用 enum
+
+1. 简单的映射
+
+``` typescript
+enum A {
+  todo = 0,
+  done,
+  archived,
+  deleted
+}
+
+let status_: A = 0
+status_ = A.todo
+status_ = A.done
+
+console.log(status_) // 1
+```
+
+2. 权限控制配合位运算
+
+```typescript
+// 权限
+
+enum Permission {
+  None = 0, // 0000
+  Read = 1 << 0, // 0001
+  Write = 1 << 1, // 0010
+  Delete = 1 << 2, //0100
+  Manage = Read | Write | Delete // 0111
+}
+
+type User = {
+  permission: Permission
+}
+
+const user: User = {
+  permission: 0b0101
+}
+
+// 如果 a & b === b , 那么 a 拥有 b 的所有
+if ((user.permission & Permission.Write) === Permission.Write) {
+  console.log('拥有写权限')
+} else {
+  console.log('没有写权限')
+}
+
+if ((user.permission & Permission.Manage) === Permission.Manage) {
+  console.log('拥有管理权限')
+} else {
+  console.log('没有管理权限')
+}
+```
+
+## 何时使用 enum 会显得很呆?
+
