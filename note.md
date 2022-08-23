@@ -266,3 +266,74 @@ console.log(f === f_)
 - number enum (√)
 - string enum (√可以, ×但可以自定义类型代替)
 - other enum (×)
+
+## type 和 interface 的前两个区别
+
+### type
+
+#### 类型别名, 给其它类型取个名字, type 几乎万能
+
+```typescript
+type Name = string
+
+type FalseLike = 0 | '' | null | undefined | false
+
+// 这个使用场景 react
+type FnWithProp = {
+  (a: number, b: number): void
+  prop: string
+}
+
+const f: FnWithProp = (x, y) => {
+  return x + y
+}
+
+f.prop = 'hello'
+```
+
+#### type 为什么叫类型别名, 不叫类型声明
+
+```typescript
+type A = string
+type B = A // ts 的设定 type 并不想被记住, type B = string
+```
+
+### 何时使用 interface
+
+声明接口, 描述对象的属性, 以面向对象的形式描述和 type 差不多的类型
+
+```typescript
+type A1 = Array<string> & {
+  name: string
+} & X
+
+interface X {
+  age: number
+}
+
+interface A2 extends Array<string>, X {
+  name: string
+}
+```
+
+```typescript
+interface Fn {
+  (a: number, b: number): number
+  xxx: number
+}
+
+const f: Fn = (x, y) => {
+  return x + y
+}
+f.xxx = 123
+
+interface D extends Date {}
+
+const d: D = new Date()
+```
+
+区别:
+1. interface 只<font color="orange">描述对象</font>, type 则描述所有数据
+2. type 只是<font color="orange">别名</font>, interface 则是类型声明
+
+## type 与 interface 的第三个区别
