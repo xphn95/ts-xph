@@ -337,3 +337,42 @@ const d: D = new Date()
 2. type 只是<font color="orange">别名</font>, interface 则是类型声明
 
 ## type 与 interface 的第三个区别
+
+type 不可再更改, 重复声明的 interface 会自动合并做到扩展的效果
+
+```typescript
+declare global {
+  interface String {
+    padZero: (x: string) => void
+  }
+}
+
+const s = 'hello'
+s.padZero('')
+
+export {}
+```
+
+对外 API 尽量用 interface 方便扩展
+对内 API 尽量用 type 防止代码分散(因为 type 不可再更改)
+
+说 type 不能继承是不对的, 继承就是扩展, type 是可以扩展的, 所以不是不使用 extends 关键字的就不是继承
+
+## void
+
+可以有返回值, 但是使用返回值时会检查的
+
+```typescript
+type Fn = () => void
+const f: Fn = () => {
+  return 'xxx'
+}
+
+const a = f()
+console.log(a.toString()) // 报错, 是没有这个方法的
+
+// 这种情况会严格检查的
+const f_ = function (): void {
+  return 2  // number 不能分配给 void
+}
+```

@@ -13,7 +13,9 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
+    // eslint 报错需要加上这句
+    project: ['./tsconfig.json']
   },
   plugins: [
     'vue'
