@@ -376,3 +376,89 @@ const f_ = function (): void {
   return 2  // number 不能分配给 void
 }
 ```
+
+## 联合类型(并集)
+
+并集绝对是范围变大, 并不是认为的要求更多范围更小
+```typescript
+interface A {
+  name: string
+}
+
+interface B {
+  age: number
+}
+
+type C = A | B
+const c: C = {
+  name: 'mike', // 只写一个属性是可以的
+  age: 10
+}
+
+console.log(c)
+export {}
+```
+
+使用的时候要搭配类型收窄, 不然只能使用原本子集共有的方法
+
+```typescript
+type A = string
+type B = number
+
+const f = (n: A | B): string | boolean => {
+  if (typeof n === 'number') {
+    return n.toFixed(2)
+  } else {
+    return n.includes('a')
+  }
+}
+f(2)
+
+export {}
+```
+
+## 使用 JS 做类型收窄
+
+
+### typeof
+`typeof x`
+
+`string`, `number`, `bigint`, `boolean`, `symbol`, `undefined`, `object`, `function`
+
+可以看到 `typeof` 能判断的所有结果
+```typescript
+let x: any
+const y = typeof x
+console.log(typeof x, y)
+
+export {}
+```
+
+### instanceof
+`typeof` 无法准确细分对象类型, `instanceof` 可以来弥补这点
+
+局限:
+- 不支持基本类型
+- 不支持 TS 独有的类型
+
+### in
+
+通过特殊的 key 来判断, 但是只适用于部分对象
+
+```typescript
+interface Person {
+  name: string
+}
+
+const f1 = (a: Person | Person[]): void => {
+  if ('name' in a) {
+    console.log(a) // a: Person
+  } else {
+    console.log(a) // a: Person[]
+  }
+}
+
+f1({ name: 'mike' })
+
+export {}
+```
