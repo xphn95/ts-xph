@@ -462,3 +462,77 @@ f1({ name: 'mike' })
 
 export {}
 ```
+
+## 类型谓词 is
+
+```typescript
+interface Rect {
+  height: number
+  width: number
+}
+
+interface Circle {
+  center: [number, number]
+  radius: number
+}
+
+const f1 = (a: Rect | Circle): number => {
+  if (isRect(a)) {
+    return a.height * a.width
+  } else {
+    return a.radius ** 2 * Math.PI
+  }
+}
+
+// 返回值的类型使用 is 可以帮助 TS 理解 true/false 代表什么
+// function isRect (x: Rect | Circle): boolean {
+function isRect (x: Rect | Circle): x is Rect {
+  return 'height' in x && 'width' in x
+}
+
+// const res = f1({ width: 2, height: 3 })
+const res = f1({ center: [1, 1], radius: 2 })
+console.log(res)
+export {}
+```
+
+## 可辨别联合类型 x.kind
+
+```typescript
+interface Circle {
+  kind: 'Circle'
+  radius: number
+}
+
+interface Square {
+  kind: 'Square'
+  sideLength: number
+}
+
+type Shape = Circle | Square
+
+const f1 = (a: Shape): number => {
+  if (a.kind === 'Square') {
+    return a.sideLength ** 2
+  } else {
+    return a.radius ** 2 * Math.PI
+  }
+}
+
+console.log(f1({ kind: 'Circle', radius: 2 }))
+export {}
+```
+
+### 优点:
+让<font color="orange">复杂类型</font>的<font color="deepskyblue">收窄</font>变成<font color="orange">简单类型</font>的<font color="deepskyblue">对比</font>
+
+### 要求:
+T = A | B | C | D |...
+1. <font color="orange">有相同属性</font> kind 或其它
+2. kind 的类型是<font color="orange">简单类型</font>
+3. 各类型中的 <font color="orange">kind 可区分</font>
+则称 T 为可辨别联合
+
+### 一句话总结
+同名, 可辩别的简单类型的 key
+

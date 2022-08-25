@@ -1,15 +1,22 @@
-interface Person {
-  name: string
+interface Circle {
+  kind: 'Circle'
+  radius: number
 }
 
-const f1 = (a: Person | Person[]): void => {
-  if ('name' in a) {
-    console.log(a) // Person
+interface Square {
+  kind: 'Square'
+  sideLength: number
+}
+
+type Shape = Circle | Square
+
+const f1 = (a: Shape): number => {
+  if (a.kind === 'Square') {
+    return a.sideLength ** 2
   } else {
-    console.log(a) // Person[]
+    return a.radius ** 2 * Math.PI
   }
 }
 
-f1({ name: 'mike' })
-
+console.log(f1({ kind: 'Circle', radius: 2 }))
 export {}
