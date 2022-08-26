@@ -1,22 +1,17 @@
-interface Circle {
-  kind: 'Circle'
-  radius: number
+interface A {
+  methods: (n: number) => void
 }
 
-interface Square {
-  kind: 'Square'
-  sideLength: number
+interface B {
+  methods: (n: string) => void
 }
+type C = A & B
 
-type Shape = Circle | Square
-
-const f1 = (a: Shape): number => {
-  if (a.kind === 'Square') {
-    return a.sideLength ** 2
-  } else {
-    return a.radius ** 2 * Math.PI
+const c: C = {
+  methods: (n) => { // n 的类型是 number | string
+    console.log(n)
   }
 }
 
-console.log(f1({ kind: 'Circle', radius: 2 }))
+console.log(c)
 export {}

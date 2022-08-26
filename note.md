@@ -536,3 +536,55 @@ T = A | B | C | D |...
 ### 一句话总结
 同名, 可辩别的简单类型的 key
 
+## 重新看待 any 和 unknown
+any 不是除了 never/unknown/any/void 的所有类型的联合, unknown 是
+
+any 类型什么方法都可以调用, 而联合在不收窄的情况下只能用些子类型共有方法, 刚好符合 unknown, unknown 可以收窄到任何类型
+
+## 交叉类型(交集)
+### 小心属性冲突时 type 交集会产生 never , 想扩展用 interface 的 extends 最好
+
+```typescript
+interface A {
+  id: string
+  email: string
+}
+
+interface B {
+  id: number
+  name: string
+}
+
+type C = B & A
+
+const c: C = {
+  id: 1, // 这里 id 类型是 never
+  name: 'mike',
+  email: 'xxx'
+}
+
+console.log(c)
+export {}
+```
+
+### 冲突的是属性为函数的入参时, 会将入参的类型取并集(联合类型)
+
+```typescript
+interface A {
+  methods: (n: number) => void
+}
+
+interface B {
+  methods: (n: string) => void
+}
+type C = A & B
+
+const c: C = {
+  methods: (n) => { // n 的类型是 number | string
+    console.log(n)
+  }
+}
+
+console.log(c)
+export {}
+```
